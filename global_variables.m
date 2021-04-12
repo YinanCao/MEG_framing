@@ -1,4 +1,4 @@
-
+% addpath
 Screen('CloseAll');
 
 Screen('Preference', 'SkipSyncTests', 2);
@@ -11,6 +11,12 @@ screenNumber = max(Screen('Screens'));
 
 % Define the keys
 keyLR = {'z','g','1!','2@'}; % b,z,g,r for 1,2,3,4
+if debug
+keyLR = {'a','f','s','d'}; % b,z,g,r for 1,2,3,4
+end
+
+keyLR = {'a','f','s','d'}; % b,z,g,r for 1,2,3,4
+
 KbName('UnifyKeyNames');
 LH = KbName(keyLR{1});
 RH = KbName(keyLR{2});
@@ -24,10 +30,16 @@ grey      = white / 2;
 green     = [0,200,0];
 red       = [200,0,0];
 blue      = [0,0,200];
+pink      = [255,20,147];
 dark_grey = white / 4;
 Gabor.holder_c  = [0 1 1];
 info.gabor_color = 'W';
+info.fb_color_set = {green,red};
 Gabor.background = grey;
+info.backgroundcolor = grey;
+info.lateral_offset = 0; % correct for lateral offset of the projected image
+
+info.feedback_text_above = 1.05;
 
 PsychImaging('PrepareConfiguration');
 PsychImaging('AddTask', 'General', 'FloatingPoint32BitIfPossible');
@@ -41,7 +53,7 @@ Screen('Preference', 'TextRenderer', 1); % smooth text
     [], [], kPsychNeed32BPCFloat);
 [center_x, center_y] = RectCenter(windowRect);
 Screen('TextFont', window, 'Helvetica'); % define text font
-Screen('TextSize', window, 22); % define text font
+Screen('TextSize', window, 20); % define text font
 info.window_rect  = windowRect;
 info.frameDur     = Screen('GetFlipInterval', window); %duration of one frame
 info.frameRate    = Screen('NominalFrameRate', window);
@@ -51,6 +63,7 @@ topPriorityLevel = MaxPriority(window);
 Priority(topPriorityLevel);
 Screen('BlendFunction', window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+center_x = center_x + info.lateral_offset;
 %%
 info.SubName       = SubName;
 info.eccentricity  = 'f';
@@ -60,6 +73,7 @@ info.mon_width_cm  = 45;   % width of monitor (cm)
 info.mon_height_cm = 26.5; % height of monitor (cm)
 info.view_dist_cm  = 50;   % viewing distance (cm)
 info.pix_per_deg   = info.window_rect(3) *(1 ./ (2 * atan2(info.mon_width_cm / 2, info.view_dist_cm))) * pi/180;
+info.fb_pix = info.pix_per_deg*info.feedback_text_above;
 
 % for eyelink:
 info.width = info.mon_width_cm;
@@ -106,6 +120,9 @@ Gabor.SDofGaussX            = Gabor.patchHalfSize/2;
 Gabor.patchPixel            = -Gabor.patchHalfSize:Gabor.patchHalfSize;
 Gabor.elp                   = 1;
 Gabor.numGabors             = 3;
+Gabor.numGabors_JND         = 2;
+Gabor.foil_contrast         = 0; % JND task
+Gabor.gabor_orientation_set = -75:30:75;
 
 if info.eccentricity == 'n'
     Gabor.gc_from_sc_deg    = 1.25;
@@ -138,13 +155,19 @@ if Gabor.Gabor_arng_rotation == 'R'
     Xpos               = [center_x,center_x,center_x] + x_rot;
     Ypos               = [center_y,center_y,center_y] + y_rot;
     footid = 4;
+    foot_name = 'RF';
+    info.framing_orientation = Gabor.gabor_orientation_set(Gabor.gabor_orientation_set<0);
 else
     x_rot              = round(x*cosd(360-Gabor.rot_deg) - y*sind(360-Gabor.rot_deg));
     y_rot              = round(y*cosd(360-Gabor.rot_deg) + x*sind(360-Gabor.rot_deg));
     Xpos               = [center_x,center_x,center_x] + x_rot;
     Ypos               = [center_y,center_y,center_y] + y_rot;
     footid = 3;
+    foot_name = 'LF';
+    info.framing_orientation = Gabor.gabor_orientation_set(Gabor.gabor_orientation_set>0);
 end
+
+info.rsp_names = {foot_name,'LH','RH'};
 
 % we need to change it to mid (top), left, right
 Gabor.Xpos = Xpos([2,1,3]); 
@@ -164,7 +187,6 @@ allCoords                     = [xCoords; yCoords];
 lineWidthPix                  = round(info.pix_per_deg*Gabor.Fixation_dot_deg);%6 pix
 fix_rect                      = [-fixCrossDimPix -lineWidthPix./2 fixCrossDimPix lineWidthPix./2];
 
-
 %% global trigger code:
 info.resp_LH_trig = 101;
 info.resp_RH_trig = 102;
@@ -173,34 +195,48 @@ info.resp_RF_trig = 104;
 info.resp_invalid_trig = 105;
 info.fix_trig = 99;
 
-%%
-% Trial.all_pos               = ['L','M','R'];
-% Trial.all_triangle_dir      = 'U';
-% Trial.numGabors             = 3;
-% Trial.Gabor_orientation     = all_angles; %linspace(30, 180-30, 6);
-% Trial.cueNumColor          = white;
-% Trial.cueNumberD           = 0.4;
-% %    Make a truncated distributaion for inter_trial delay
-% pd                         = makedist('Exponential','mu',0.75);
-% t                          = truncate(pd,0.6,1.5);
-% Trial.BRD                  = random(t,[1,nTrials]);% Being Ready duration
-% Trial.cueD                 = 0.05; % cue duration
-% Trial.cue2StimD            = cue2StimGap;
-% Trial.SD                   = 1.5;% Stimulus duration
-% Trial.s2PD                 = 0.5;
-% Trial.ProbD                = 0.5;
-% Trial.StRCD                = 0.5; % probe offset to response onset
-% Trial.RCD                  = 1.5; % Response cue duration
-% Trial.FBD                  = 0.25;% FeedBack duration
-% Trial.TimeWaitafterFB      = 0.6;
-% %%
+% sensory loc triggers starts with 11
+% valid = 11 ~ 28
+% invalid = 29,30,31
 
-% info.nTrials       = nTrials;
-% info.SubNo         = SubNo;
-% info.Age           = Age;
-% info.Gender        = Gender;
-% info.Hand          = Hand;
-% info.Date          = date;
-% info.Session_type  = session_type;
-% info.Session_No    = session_No;
-% info.kb_setup      = 'MEG';
+info.motor_cueon_trig = 81;
+info.motor_cueoff_trig = 82;
+info.motor_go_trig = 83;
+
+info.fb_correct = 111;
+info.fb_wrong   = 112;
+info.fb_missed  = 113;
+fb_trig_set = [info.fb_correct,info.fb_wrong,info.fb_missed];
+
+info.frame_on_trig = 71;
+info.delayon_trig = 72;
+info.frame_rspon_trig = 73;
+
+% framing stim trigger:
+info.frame_c = (1:5) + 40;
+info.frame_o = (1:6) + 50;
+info.frame_f = (1:2) + 60;
+
+info.eyelinkstart = 2;
+
+%% Timing:
+info.stimoff2rsp = 0.15;
+info.rsp_win = 1;
+info.feedbackdur = 0.2;
+info.intertrial_gap = 1;
+
+% motor loc:
+info.motor_loc_cue_dur = 0.3;
+info.motor_loc_delay = 1;
+info.motor_loc_dl = 2;
+info.motor_rest_postrsp = 0.5;
+
+info.sensory_loc_gabordur = 0.35;
+info.sensory_loc_rspdl = 0.7;
+info.sensory_loc_timeout = 0.5;
+
+info.frame_sensorydur = 1;
+info.framing_rspdl = 3;
+info.frame_dur = 0.3;
+info.frame_decision_delay = 2;
+

@@ -19,9 +19,10 @@ else
         rsp_code = nan;
         rsp_trig = info.resp_invalid_trig;
 end
-            
-trigger(rsp_trig);
 
+trig_id = rsp_trig;
+trigger(trig_id); disp(['response trig == ',num2str(trig_id)])
+    
 if info.ET
     Eyelink('message', num2str(rsp_trig));
 end
