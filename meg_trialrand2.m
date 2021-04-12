@@ -33,6 +33,8 @@ size(fullcond)
 
 type = fullcond(:,1);
 n = size(fullcond,1);
+fullcond
+%%
 
 while 1
     

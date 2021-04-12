@@ -38,7 +38,7 @@ info.gabor_color = 'W';
 info.fb_color_set = {green,red};
 Gabor.background = grey;
 info.backgroundcolor = grey;
-info.lateral_offset = 0; % correct for lateral offset of the projected image
+info.lateral_offset = -75; % correct for lateral offset of the projected image
 
 info.feedback_text_above = 1.05;
 
@@ -72,7 +72,7 @@ info.ET            = EL_flag;
 info.do_trigger    = trigger_flag;
 info.mon_width_cm  = 45;   % width of monitor (cm)
 info.mon_height_cm = 26.5; % height of monitor (cm)
-info.view_dist_cm  = 50;   % viewing distance (cm)
+info.view_dist_cm  = 56;   % viewing distance (cm)
 info.pix_per_deg   = info.window_rect(3) *(1 ./ (2 * atan2(info.mon_width_cm / 2, info.view_dist_cm))) * pi/180;
 info.fb_pix = info.pix_per_deg*info.feedback_text_above;
 

@@ -1,6 +1,6 @@
 
 if practice
-    nTrials = 10;
+    nTrials = 30;
 else
     nTrials = 100;
 end
@@ -68,6 +68,8 @@ end
 %---------------
 drawtext_realign(window, 'Brightness Judgement', 'center', white, info)
 drawtext_realign(window, 'Bitte machen Sie sich bereit', center_y + 175, white, info)
+Rotated_fixation(window, fix_rect, center_x, center_y,dark_grey,[0,90]);
+Screen('FillOval', window, white, CenterRectOnPointd([0 0 lineWidthPix lineWidthPix], center_x, center_y));
 Screen('Flip', window); 
 waiting_screen;
 
@@ -192,6 +194,8 @@ JND.base_value       = TrialJND.Gabor_all_contrast_base(1);
 estimated_jnd = [Quest.Quantile_JND, Quest.Mean_JND]
 disp(['JND = ', num2str(estimated_jnd)])
 
+if ~practice
 if ~exist([log_dir,SubName,'_contrast_JND.mat'],'file')
     save([log_dir,SubName,'_contrast_JND.mat'],'JND_BDMOGtask','Quest','JND');
+end
 end

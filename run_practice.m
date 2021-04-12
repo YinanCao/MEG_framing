@@ -10,8 +10,8 @@ end
 
 gabor_triangle_rotation = 'L';
 EL_flag = 0;
-trigger_flag = 0;
-debug = 1;
+trigger_flag = 1;
+debug = 0;
 practice = 1;
 
 %---------------
@@ -42,10 +42,10 @@ if info.ET
     trigger(info.eyelinkstart);
 end
 
-% JND_quest;
-% motor_localizer;
-% sensory_localizer;
-framing_task;
+JND_quest;
+%motor_localizer;
+%sensory_localizer;
+%framing_task;
 
 % Save Eyelink data
 if info.ET

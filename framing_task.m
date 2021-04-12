@@ -6,7 +6,7 @@ if practice
     nTrials = 10;
 end
 
-load([SubName,'_framing_design.mat']);
+load([log_dir,SubName,'_framing_design.mat']);
 N_perrun = size(framing_design,1);
 for run = 1:size(framing_design,3) % randomize with run
     framing_design(:,:,run) = framing_design(randperm(N_perrun),:,run);
@@ -158,6 +158,8 @@ for trial = 1:nTrials
     Screen('FillOval', window, white, CenterRectOnPointd([0 0 lineWidthPix lineWidthPix], center_x, center_y));
     Screen('Flip', window);
     WaitSecs(info.intertrial_gap);
+    
+    Screen('Close', txt_id)
     
     toc;
 end
