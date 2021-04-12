@@ -39,9 +39,9 @@ if info.ET
 end
 
 
-JND_quest;
-motor_localizer;
-sensory_localizer;
+% JND_quest;
+% motor_localizer;
+% sensory_localizer;
 framing_task;
 
 
