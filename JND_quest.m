@@ -192,6 +192,6 @@ JND.base_value       = TrialJND.Gabor_all_contrast_base(1);
 estimated_jnd = [Quest.Quantile_JND, Quest.Mean_JND]
 disp(['JND = ', num2str(estimated_jnd)])
 
-if ~exist([SubName,'_contrast_JND.mat'],'file')
-    save([SubName,'_contrast_JND.mat'],'JND_BDMOGtask','Quest','JND');
+if ~exist([log_dir,SubName,'_contrast_JND.mat'],'file')
+    save([log_dir,SubName,'_contrast_JND.mat'],'JND_BDMOGtask','Quest','JND');
 end

@@ -1,6 +1,4 @@
-clear; clc; close all;
 
-SubName = 'MSi';
 % 9 types (angles):
 ang = [ 3,3,3
         2,2,2
@@ -103,7 +101,6 @@ end
     if sum(p_s(:))==0 && sum(ttest(beta))==0
         break;
     end
-
 end
 
 beta
@@ -111,7 +108,10 @@ ttest(beta)
 pall
 
 framing_design = Y2(:,1:8,:);
-save([SubName,'_framing_design.mat'],'framing_design','beta','pall');
+
+
+save([log_dir,SubName,'_framing_design.mat'],'framing_design','beta','pall');
+
 
 
 
