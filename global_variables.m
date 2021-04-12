@@ -1,4 +1,5 @@
-% addpath
+addpath(genpath('/usr/share/psychtoolbox-3/'))
+
 Screen('CloseAll');
 
 Screen('Preference', 'SkipSyncTests', 2);
