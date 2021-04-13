@@ -23,7 +23,7 @@ trigger_id = 10; % sensory loc triggers starts with 11
 for loc = 1:3
     for con = 1:5
         trigger_id = trigger_id + 1;
-        for rep = 1:10
+        for rep = 1:15
             design = [design; validity,loc,con,trigger_id];
         end
     end
@@ -32,7 +32,9 @@ validity = 0; % target trials
 for loc = 1:3
     trigger_id = trigger_id + 1;
     for con = 1:5
+    for rep = 1
         design = [design; validity,loc,con,trigger_id];
+    end
     end
 end
 while 1 % not too close in time

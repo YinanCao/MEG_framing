@@ -17,10 +17,10 @@ screenNumber = max(Screen('Screens'));
 % Define the keys
 keyLR = {'z','g','1!','2@'}; % b,z,g,r for 1,2,3,4
 if debug
-keyLR = {'a','f','s','d'}; % b,z,g,r for 1,2,3,4
+%keyLR = {'a','f','s','d'}; % b,z,g,r for 1,2,3,4
 end
 
-keyLR = {'a','f','s','d'}; % b,z,g,r for 1,2,3,4
+%keyLR = {'a','f','s','d'}; % b,z,g,r for 1,2,3,4
 
 KbName('UnifyKeyNames');
 LH = KbName(keyLR{1});
@@ -226,14 +226,14 @@ info.eyelinkstart = 2;
 
 %% Timing:
 info.stimoff2rsp = 0.15;
-info.rsp_win = 1;
+info.rsp_win = 3;
 info.feedbackdur = 0.2;
 info.intertrial_gap = 1;
 
 % motor loc:
 info.motor_loc_cue_dur = 0.3;
 info.motor_loc_delay = 1;
-info.motor_loc_dl = 2;
+info.motor_loc_dl = 3;
 info.motor_rest_postrsp = 0.5;
 
 info.sensory_loc_gabordur = 0.35;

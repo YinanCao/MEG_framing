@@ -5,7 +5,7 @@ EL_flag = 1;
 trigger_flag = 1;
 debug = 0; % small window
 practice = 0;
-realframing = 1;
+realframing = 0;   
 
 %---------------
 % initialization:
@@ -13,8 +13,8 @@ global_variables;
 %---------------
 
 % HideCursor;
-info.whichsess = 2;
-info.whichrun = 9;
+info.whichsess = 0; % practice
+info.whichrun = 4; % resting state
 
 drawtext_realign(window, 'Eye Position Calibration', 'center', white, info)
 drawtext_realign(window, 'Bewegen Sie Ihre Augen, um den schwarzen Punkt zu verfolgen', center_y + 175, white, info)
@@ -38,6 +38,7 @@ drawtext_realign(window, 'Bitte nicht bewegen!', center_y + 175, white, info)
 Screen('Flip', window);
 waiting_screen;
 
+
 % Start Eyelink recording
 if info.ET
     disp('ET recording >>>>>>>>>')
@@ -47,29 +48,27 @@ if info.ET
     trigger(info.eyelinkstart);
 end
 
-sensory_localizer;
 
-time_str = strrep(mat2str(fix(clock)),' ','_');
-if ~practice
-    matname = [log_dir,SubName,'_framing_ses',num2str(info.whichsess),'_run',...
-        num2str(info.whichrun),time_str,'.mat'];
-    save(matname,'info','Gabor','TrialSL')
+% fixation presentation before stimulus onset
+Rotated_fixation(window,fix_rect,center_x,center_y,dark_grey,[0,90]);
+Screen('FillOval', window, white, CenterRectOnPointd([0 0 lineWidthPix lineWidthPix], center_x, center_y));
+start_fix = Screen('Flip', window);
+trig_id = info.fix_trig;
+trigger(trig_id); disp(['fix trig == ',num2str(trig_id)])
+if info.ET
+    Eyelink('command', 'record_status_message "TRIAL %d/%d"', trial, nTrials);
+    Eyelink('message', 'TRIALID %d', trial);
+    Eyelink('message', num2str(trig_id));
 end
 
-drawtext_realign(window, '10 s break', 'center', white, info)
-Screen('Flip', window);
-WaitSecs(10);
-framing_task;
 
-% stay still after all trials
-drawtext_realign(window, 'Head Position Localization', 'center', white, info)
-drawtext_realign(window, 'Bitte nicht bewegen!', center_y + 175, white, info)
-Screen('Flip', window);
+waiting_screen;
+
 
 % Save Eyelink data
-info.eyefilename = 'none';
 if info.ET
     disp('>>> attempting to save ET data >>>')
+    time_str = strrep(mat2str(fix(clock)),' ','_');
     eyefilename = fullfile([log_dir,time_str,'_',info.edfFile]);
     Eyelink('CloseFile');
     Eyelink('WaitForModeReady', 500);
@@ -80,16 +79,9 @@ if info.ET
         warning(['File ' eyefilename ' not saved to disk']);
     end
     Eyelink('StopRecording');
-    info.eyefilename = eyefilename;
 end
 
-info.matdatadir = log_dir;
-if ~practice
-    matname = [log_dir,SubName,'_framing_ses',num2str(info.whichsess),'_run',...
-        num2str(info.whichrun),time_str,'.mat'];
-    save(matname,'info','Gabor','TrialSL','TrialFrame')
-end
-waiting_screen;
+% Close and clear all
 Screen('CloseAll');
 ShowCursor;
 fclose('all');

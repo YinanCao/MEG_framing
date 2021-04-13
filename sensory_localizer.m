@@ -59,7 +59,7 @@ if practice
     design([6,13],1) = 0;
 end
 
-nTrials=2
+
 for trial = 1:nTrials
     
     % fixation presentation before stimulus onset

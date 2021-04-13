@@ -1,9 +1,9 @@
 clear; clc; close all;
-SubName = 'XYZ26';
+SubName = 'BPA23';
 gabor_triangle_rotation = 'L';
-EL_flag = 0;
-trigger_flag = 0;
-debug = 1; % small window
+EL_flag = 1;
+trigger_flag = 1;
+debug = 0; % small window
 practice = 0;   
 
 %---------------

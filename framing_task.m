@@ -46,10 +46,10 @@ TrialFrame.sensoryDur = info.frame_sensorydur;
 TrialFrame.frame_dur = info.frame_dur;
 TrialFrame.decision_delay = info.frame_decision_delay;
 TrialFrame.stimoff2rsp = info.stimoff2rsp;
-nTrials=12
+
 for trial = 1:nTrials
     
-    if ismember(trial,[5,9])  %ismember(trial,[41,81]) 
+    if ismember(trial,[41,81]) 
         drawtext_realign(window, '10 s break', 'center', white, info)
         Screen('Flip', window);
         WaitSecs(10);
