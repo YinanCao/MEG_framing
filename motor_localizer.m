@@ -94,8 +94,11 @@ for trial = 1:nTrials
         rsp_correct = 3;
     end
     TrialML.answer{trial} = rsp;
+    TrialML.motorcue{trial} = motor_cue_name{cue_id(trial)};
+    TrialML.correct(trial) = rsp_correct;
+    TrialML.RT(trial) = endrt - start;
     
-    Screen('Flip', window);
+    FBon = Screen('Flip', window);
     
     WaitSecs(TrialML.FBD);
     
@@ -109,5 +112,5 @@ for trial = 1:nTrials
     
     WaitSecs(TrialML.timeout);
     
+    TrialML.time(trial,:) = [start_fix,cueOn,cueOff,motorGo,endrt,FBon];
 end
-

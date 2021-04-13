@@ -1,6 +1,6 @@
 
 if practice
-    nTrials = 30;
+    nTrials = 10;
 else
     nTrials = 100;
 end
@@ -68,8 +68,6 @@ end
 %---------------
 drawtext_realign(window, 'Brightness Judgement', 'center', white, info)
 drawtext_realign(window, 'Bitte machen Sie sich bereit', center_y + 175, white, info)
-Rotated_fixation(window, fix_rect, center_x, center_y,dark_grey,[0,90]);
-Screen('FillOval', window, white, CenterRectOnPointd([0 0 lineWidthPix lineWidthPix], center_x, center_y));
 Screen('Flip', window); 
 waiting_screen;
 
@@ -155,22 +153,11 @@ Quest.Mode_JND               = mean(mode_list);
 final_message = sprintf('Danke! Your accuracy was: %0.2f %%', TrialJND.Acc_withMissed*100);
 drawtext_realign(window, final_message, center_y, white, info)
 Screen('Flip', window);
-WaitSecs(3); 
-% trigger(trigger_enc.block_end);  % trigger to mark end of the block
-% if  info.ET
-%     Eyelink('message', num2str(trigger_enc.block_end));
-% end
+WaitSecs(3);
 JND_BDMOGtask.info = info;
 JND_BDMOGtask.Trial = TrialJND;
 JND_BDMOGtask.Gabor = Gabor;
 JND_BDMOGtask.Quest = Quest;
-
-% Beh_path=sprintf('Beh_data/%s/%s/Sub (%i)/Se (%i)',session_type,Block_type,SubNo,session_No);
-% if ~isdir (Beh_path)
-%     mkdir(Beh_path);
-% end
-% Save_beh_path=sprintf('Beh_data/%s/%s/Sub (%i)/Se (%i)/block_%i',session_type,Block_type,SubNo,session_No,Block_No);
-% save(Save_beh_path,'JND_BDMOGtask');
 
 JND.quantile         = Quest.Quantile_JND;
 JND.mean             = Quest.Mean_JND;
@@ -195,7 +182,7 @@ estimated_jnd = [Quest.Quantile_JND, Quest.Mean_JND]
 disp(['JND = ', num2str(estimated_jnd)])
 
 if ~practice
-if ~exist([log_dir,SubName,'_contrast_JND.mat'],'file')
-    save([log_dir,SubName,'_contrast_JND.mat'],'JND_BDMOGtask','Quest','JND');
-end
+    if ~exist([log_dir,SubName,'_contrast_JND.mat'],'file')
+        save([log_dir,SubName,'_contrast_JND.mat'],'JND_BDMOGtask','Quest','JND');
+    end
 end

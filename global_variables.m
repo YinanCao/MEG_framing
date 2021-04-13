@@ -1,5 +1,9 @@
 addpath(genpath('/usr/share/psychtoolbox-3/'))
-
+if IsLinux
+log_dir = '/home/usera/Documents/MEG_framing_data/';
+else
+log_dir = '/Users/yinancaojake/Documents/Postdoc/UKE/MEG_framing_data/';
+end
 Screen('CloseAll');
 
 Screen('Preference', 'SkipSyncTests', 2);
@@ -63,7 +67,7 @@ ifi = info.frameDur;
 topPriorityLevel = MaxPriority(window);
 Priority(topPriorityLevel);
 Screen('BlendFunction', window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
+HideCursor;
 center_x = center_x + info.lateral_offset;
 %%
 info.SubName       = SubName;
@@ -239,5 +243,5 @@ info.sensory_loc_timeout = 0.5;
 info.frame_sensorydur = 1;
 info.framing_rspdl = 3;
 info.frame_dur = 0.3;
-info.frame_decision_delay = 2;
+info.frame_decision_delay = 2.5;
 

@@ -4,8 +4,7 @@ gabor_triangle_rotation = 'L';
 EL_flag = 0;
 trigger_flag = 0;
 debug = 1; % small window
-practice = 1;
-realframing = 0;
+practice = 0;   
 
 %---------------
 % initialization:
@@ -13,8 +12,8 @@ global_variables;
 %---------------
 
 % HideCursor;
-info.whichsess = 0; % practice
-info.whichrun = 1;
+info.whichsess = 0; % for motor
+info.whichrun = 2;
 
 drawtext_realign(window, 'Eye Position Calibration', 'center', white, info)
 drawtext_realign(window, 'Bewegen Sie Ihre Augen, um den schwarzen Punkt zu verfolgen', center_y + 175, white, info)
@@ -47,15 +46,18 @@ if info.ET
     trigger(info.eyelinkstart);
 end
 
-JND_quest;
 motor_localizer;
-sensory_localizer;
-framing_task;
+
+% stay still after all trials
+drawtext_realign(window, 'Head Position Localization', 'center', white, info)
+drawtext_realign(window, 'Bitte nicht bewegen!', center_y + 175, white, info)
+Screen('Flip', window);
 
 % Save Eyelink data
+time_str = strrep(mat2str(fix(clock)),' ','_');
+info.eyefilename = 'none';
 if info.ET
     disp('>>> attempting to save ET data >>>')
-    time_str = strrep(mat2str(fix(clock)),' ','_');
     eyefilename = fullfile([log_dir,time_str,'_',info.edfFile]);
     Eyelink('CloseFile');
     Eyelink('WaitForModeReady', 500);
@@ -66,9 +68,15 @@ if info.ET
         warning(['File ' eyefilename ' not saved to disk']);
     end
     Eyelink('StopRecording');
+    info.eyefilename = eyefilename;
 end
 
-% Close and clear all
+info.matdatadir = log_dir;
+if ~practice
+    matname = [log_dir,SubName,'_motorLoc_',time_str,'.mat'];
+    save(matname,'info','Gabor','TrialML')
+end
+waiting_screen;
 Screen('CloseAll');
 ShowCursor;
 fclose('all');

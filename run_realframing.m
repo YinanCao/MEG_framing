@@ -4,8 +4,8 @@ gabor_triangle_rotation = 'L';
 EL_flag = 0;
 trigger_flag = 0;
 debug = 1; % small window
-practice = 1;
-realframing = 0;
+practice = 0;
+realframing = 1;
 
 %---------------
 % initialization:
@@ -13,8 +13,8 @@ global_variables;
 %---------------
 
 % HideCursor;
-info.whichsess = 0; % practice
-info.whichrun = 1;
+info.whichsess = 1;
+info.whichrun = 2;
 
 drawtext_realign(window, 'Eye Position Calibration', 'center', white, info)
 drawtext_realign(window, 'Bewegen Sie Ihre Augen, um den schwarzen Punkt zu verfolgen', center_y + 175, white, info)
@@ -47,15 +47,29 @@ if info.ET
     trigger(info.eyelinkstart);
 end
 
-JND_quest;
-motor_localizer;
 sensory_localizer;
+
+time_str = strrep(mat2str(fix(clock)),' ','_');
+if ~practice
+    matname = [log_dir,SubName,'_framing_ses',num2str(info.whichsess),'_run',...
+        num2str(info.whichrun),time_str,'.mat'];
+    save(matname,'info','Gabor','TrialSL')
+end
+
+drawtext_realign(window, '10 s break', 'center', white, info)
+Screen('Flip', window);
+WaitSecs(10);
 framing_task;
 
+% stay still after all trials
+drawtext_realign(window, 'Head Position Localization', 'center', white, info)
+drawtext_realign(window, 'Bitte nicht bewegen!', center_y + 175, white, info)
+Screen('Flip', window);
+
 % Save Eyelink data
+info.eyefilename = 'none';
 if info.ET
     disp('>>> attempting to save ET data >>>')
-    time_str = strrep(mat2str(fix(clock)),' ','_');
     eyefilename = fullfile([log_dir,time_str,'_',info.edfFile]);
     Eyelink('CloseFile');
     Eyelink('WaitForModeReady', 500);
@@ -66,9 +80,16 @@ if info.ET
         warning(['File ' eyefilename ' not saved to disk']);
     end
     Eyelink('StopRecording');
+    info.eyefilename = eyefilename;
 end
 
-% Close and clear all
+info.matdatadir = log_dir;
+if ~practice
+    matname = [log_dir,SubName,'_framing_ses',num2str(info.whichsess),'_run',...
+        num2str(info.whichrun),time_str,'.mat'];
+    save(matname,'info','Gabor','TrialSL','TrialFrame')
+end
+waiting_screen;
 Screen('CloseAll');
 ShowCursor;
 fclose('all');

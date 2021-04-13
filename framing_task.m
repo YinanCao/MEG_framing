@@ -6,14 +6,15 @@ if practice
     nTrials = 10;
 end
 
-load([log_dir,SubName,'_framing_design.mat']);
+load([log_dir,SubName_frame,'_framing_design.mat']);
 N_perrun = size(framing_design,1);
 for run = 1:size(framing_design,3) % randomize with run
     framing_design(:,:,run) = framing_design(randperm(N_perrun),:,run);
 end
+TrialFrame.framing_design = framing_design;
 
 if ~practice
-    load([SubName,'_contrast_JND.mat'])
+    load([log_dir,SubName,'_contrast_JND.mat'])
     JND = Quest.Quantile_JND;
     nTrials = N_perrun;
 end
@@ -29,18 +30,31 @@ info.gabor_contrast_set = tmp;
 drawtext_realign(window, '3-Option Decision-Making', 'center', white, info)
 drawtext_realign(window, 'Bitte machen Sie sich bereit', center_y + 175, white, info)
 Screen('Flip', window);
-waiting_screen;
 
-ITI = [0.85, 1.1];
+if realframing
+    WaitSecs(1);
+else
+    waiting_screen;
+end
+
+ITI = [0.75, 1.25];
 TrialFrame.iti = min(ITI) + abs(diff(ITI))*rand(1,nTrials);
+TrialFrame.iti(1) = 5; % first trial long fixation
 TrialFrame.deadline = info.framing_rspdl;
 TrialFrame.FBD = info.feedbackdur;
 TrialFrame.sensoryDur = info.frame_sensorydur;
 TrialFrame.frame_dur = info.frame_dur;
 TrialFrame.decision_delay = info.frame_decision_delay;
 TrialFrame.stimoff2rsp = info.stimoff2rsp;
-
+nTrials=12
 for trial = 1:nTrials
+    
+    if ismember(trial,[5,9])  %ismember(trial,[41,81]) 
+        drawtext_realign(window, '10 s break', 'center', white, info)
+        Screen('Flip', window);
+        WaitSecs(10);
+        TrialFrame.iti(trial) = 3; % longer fixation after break
+    end
     
     tic
     % draw gabors:
@@ -54,7 +68,6 @@ for trial = 1:nTrials
     for loc = 1:3
         [txt_id(loc), dstRect(:,loc)] = create_gabor(window, Gabor, contrast_TLR(loc), loc);
     end
-    
 
     % fixation presentation before stimulus onset
     Rotated_fixation(window,fix_rect,center_x,center_y,dark_grey,[0,90]);
@@ -83,7 +96,6 @@ for trial = 1:nTrials
     Rotated_fixation(window,fix_rect,center_x,center_y,dark_grey,[0,90]);
     Screen('FillOval', window, white, CenterRectOnPointd([0 0 lineWidthPix lineWidthPix], center_x, center_y));
     sensory_on = Screen('Flip', window, start_fix + (fixFrames - .5)*ifi);
-%     trigger(stim_trig) % >>>>>>>>>>>
     
     % frame cue on:
     frame_color_set = {red; blue};
@@ -129,7 +141,7 @@ for trial = 1:nTrials
     [keyIsDown, secs, press_key, deltaSecs] = KbCheck(-3,2);
     while ( press_key(LH)==0  && press_key(RH)==0 && ...
             press_key(LF)==0  && press_key(RF)==0 && ...
-            GetSecs-start<TrialFrame.deadline )
+            GetSecs-start<TrialFrame.deadline)
         [keyIsDown, secs, press_key, deltaSecs] = KbCheck(-3,2);
         endrt = secs;
     end
@@ -161,7 +173,13 @@ for trial = 1:nTrials
     
     Screen('Close', txt_id)
     
+    TrialFrame.answer{trial} = rsp;
+    TrialFrame.correct(trial) = rsp_correct;
+    TrialFrame.RT(trial) = endrt - start;
+    TrialFrame.time(trial,:) = [start_fix,sensory_on,frame_on,frame_off,delay_off,rsp_on,endrt,feedbackOn];
+    
+    trueanswer_loc = framing_design(trial,7,whichrun);
+    TrialFrame.key_variables(trial,:) = [contrast_TLR, orientat_TLR, frame_cue, trueanswer_loc];
+    
     toc;
 end
-
-

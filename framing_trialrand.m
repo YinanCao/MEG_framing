@@ -1,5 +1,14 @@
+clear; clc; close all;
 
+if IsLinux
+log_dir = '/home/usera/Documents/MEG_framing_data/';
+else
+log_dir = '/Users/yinancaojake/Documents/Postdoc/UKE/MEG_framing_data/';
+end
 
+for subj = 4
+
+SubName = ['subj_',num2str(subj)];
 
 % 9 types (angles):
 ang = [ 3,3,3
@@ -35,8 +44,6 @@ size(fullcond)
 
 type = fullcond(:,1);
 n = size(fullcond,1);
-fullcond
-%%
 
 while 1
     
@@ -101,8 +108,13 @@ for run = 1:size(Y2,3)
     pall = [pall;p];
 end
 
+min_N_per_ori_class = [];
+for k = 1:120
+    min_N_per_ori_class = [min_N_per_ori_class;...
+        min([sum(X(X(:,end)==k,1)<=3),sum(X(X(:,end)==k,1)>3)])];
+end
     p_s = pall<=0.05;
-    if sum(p_s(:))==0 && sum(ttest(beta))==0
+    if sum(p_s(:))==0 && sum(ttest(beta))==0 && min(min_N_per_ori_class)>=1
         break;
     end
 end
@@ -113,11 +125,11 @@ pall
 
 framing_design = Y2(:,1:8,:);
 
-
+if ~exist([log_dir,SubName,'_framing_design.mat'],'file')
 save([log_dir,SubName,'_framing_design.mat'],'framing_design','beta','pall');
+end
 
-
-
+end
 
 
 

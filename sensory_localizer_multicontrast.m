@@ -1,32 +1,40 @@
 
+
+if practice
+    JND = 0.12;
+end
+if ~practice
+    load([log_dir,SubName,'_contrast_JND.mat'])
+    JND = Quest.Quantile_JND;
+end
+tmp = [-2,-1,0,1,2]*JND + 0.5;
+tmp(tmp>1) = 1;
+tmp(tmp<0.15) = 0.15;
+info.gabor_contrast_set = tmp;
+
 %---------------
 % Design matrix:
 %---------------
-% orientation = 6, location = 3, rep = 4;
-n_orientations = length(Gabor.gabor_orientation_set);
+% orientation = 2, location = 3, rep = 4;
+n_contrast = 1;
 design = [];
 validity = 1;
 trigger_id = 10; % sensory loc triggers starts with 11
 for loc = 1:3
-    for ori = 1:n_orientations
+    for con = 1:5
         trigger_id = trigger_id + 1;
-        for rep = 1:4
-            design = [design; validity,loc,ori,trigger_id];
+        for rep = 1:10
+            design = [design; validity,loc,con,trigger_id];
         end
     end
 end
 validity = 0; % target trials
-targ_trial_ori = randperm(n_orientations);
-k = 1;
 for loc = 1:3
     trigger_id = trigger_id + 1;
-    for rep = 1:2
-        ori = targ_trial_ori(k);
-        design = [design; validity,loc,ori,trigger_id];
-        k = k + 1;
+    for con = 1:5
+        design = [design; validity,loc,con,trigger_id];
     end
 end
-
 while 1 % not too close in time
     design = design(randperm(size(design,1)),:);
     idx = find(design(:,1)==0);
@@ -36,6 +44,7 @@ while 1 % not too close in time
 end
 nTrials = size(design,1);
 TrialSL.design = design;
+
 
 %---------------
 % Start the task
@@ -59,7 +68,7 @@ if practice
     design([6,13],1) = 0;
 end
 
-nTrials=2
+
 for trial = 1:nTrials
     
     % fixation presentation before stimulus onset
@@ -76,9 +85,9 @@ for trial = 1:nTrials
     fixFrames = round(TrialSL.iti(trial)/ifi);
     
     % Gabor:
-    contrast = 1;
+    contrast = info.gabor_contrast_set(design(trial,3));
     location = design(trial,2);
-    orientation = Gabor.gabor_orientation_set(design(trial,3));
+    orientation = mean(info.framing_orientation);
     [textureIndexTarg,dstRect] = create_gabor(window, Gabor, contrast, location);
     stim_trig = design(trial,end);
     valid_trial = design(trial,1);

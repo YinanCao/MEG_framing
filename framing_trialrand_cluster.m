@@ -1,5 +1,8 @@
+clear; clc; close all;
 
+for subj = 1:20
 
+SubName = ['subj#_',num2str(subj)];
 
 % 9 types (angles):
 ang = [ 3,3,3
@@ -10,12 +13,12 @@ ang = [ 3,3,3
         3,2,1
         1,3,2
         2,1,3
-        3,1,2]
+        3,1,2];
 angle_set = [1,2,3]; % [-75,-45,-15]
 ang = angle_set(ang);
 % 10 contrast comb:
-con = nchoosek(1:5,3) % sorted naturally in each row
-loc_perm = perms(1:3) % spatial permutation
+con = nchoosek(1:5,3); % sorted naturally in each row
+loc_perm = perms(1:3); % spatial permutation
 
 % 10 con comb, 2 frames, 6 loc perms, 9 types
 fullcond = [];
@@ -35,11 +38,9 @@ size(fullcond)
 
 type = fullcond(:,1);
 n = size(fullcond,1);
-fullcond
-%%
 
 while 1
-    
+
 type_s = type(randperm(n)); % suffle first col: type"
 X = [type_s, fullcond(:,2:end)];
 nt = size(X,1);
@@ -101,8 +102,13 @@ for run = 1:size(Y2,3)
     pall = [pall;p];
 end
 
+min_N_per_ori_class = [];
+for k = 1:120
+    min_N_per_ori_class = [min_N_per_ori_class;...
+        min([sum(X(X(:,end)==k,1)<=3),sum(X(X(:,end)==k,1)>3)])];
+end
     p_s = pall<=0.05;
-    if sum(p_s(:))==0 && sum(ttest(beta))==0
+    if sum(p_s(:))==0 && sum(ttest(beta))==0 && min(min_N_per_ori_class)>=1
         break;
     end
 end
@@ -113,11 +119,11 @@ pall
 
 framing_design = Y2(:,1:8,:);
 
+if ~exist([SubName,'_framing_design.mat'],'file')
+save([SubName,'_framing_design.mat'],'framing_design','beta','pall','Y','X','min_N_per_ori_class');
+end
 
-save([log_dir,SubName,'_framing_design.mat'],'framing_design','beta','pall');
-
-
-
+end
 
 
 
