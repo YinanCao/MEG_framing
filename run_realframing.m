@@ -1,20 +1,23 @@
 clear; clc; close all;
-SubName = 'BPA23';
-gabor_triangle_rotation = 'L';
+
 EL_flag = 1;
 trigger_flag = 1;
 debug = 0; % small window
 practice = 0;
 realframing = 1;
 
+prompt = 'Which session? ';
+info.whichsess = input (prompt);
+disp(['session = ', num2str(info.whichsess)])
+prompt = 'Which run? ';
+info.whichrun = input (prompt);
+disp(['run = ', num2str(info.whichrun)])
+pause(2)
+
 %---------------
 % initialization:
 global_variables;
 %---------------
-
-% HideCursor;
-info.whichsess = 2;
-info.whichrun = 9;
 
 drawtext_realign(window, 'Eye Position Calibration', 'center', white, info)
 drawtext_realign(window, 'Bewegen Sie Ihre Augen, um den schwarzen Punkt zu verfolgen', center_y + 175, white, info)

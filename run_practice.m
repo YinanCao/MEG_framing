@@ -1,6 +1,5 @@
 clear; clc; close all;
-SubName = 'BPA23';
-gabor_triangle_rotation = 'L';
+
 EL_flag = 1;
 trigger_flag = 1;
 debug = 0; % small window
@@ -14,7 +13,7 @@ global_variables;
 
 % HideCursor;
 info.whichsess = 0; % practice
-info.whichrun = 1;
+info.whichrun = 0;
 
 drawtext_realign(window, 'Eye Position Calibration', 'center', white, info)
 drawtext_realign(window, 'Bewegen Sie Ihre Augen, um den schwarzen Punkt zu verfolgen', center_y + 175, white, info)

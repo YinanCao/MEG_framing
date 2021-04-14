@@ -6,7 +6,7 @@ else
 log_dir = '/Users/yinancaojake/Documents/Postdoc/UKE/MEG_framing_data/';
 end
 
-for subj = 2
+for subj = 2:3
 
 SubName = ['subj#_',num2str(subj)];
 
@@ -57,7 +57,6 @@ X = [];
 for bb = 1:size(X2,3)
     X = [X;X2(:,:,bb)];
 end
-pause
 
 nt = size(X,1);
 Y = [];
@@ -135,9 +134,9 @@ pall
 
 framing_design = Y2(:,1:8,:);
 
-% if ~exist([log_dir,SubName,'_framing_design.mat'],'file')
+if ~exist([log_dir,SubName,'_framing_design.mat'],'file')
 save([log_dir,SubName,'_framing_design.mat'],'framing_design','beta','pall','Y','X','min_N_per_ori_class');
-% end
+end
 
 
 

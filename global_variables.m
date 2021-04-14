@@ -1,3 +1,7 @@
+
+SubName = 'XXX';
+gabor_triangle_rotation = 'R';
+
 addpath(genpath('/usr/share/psychtoolbox-3/'))
 if IsLinux
 log_dir = '/home/usera/Documents/MEG_framing_data/';
@@ -17,10 +21,8 @@ screenNumber = max(Screen('Screens'));
 % Define the keys
 keyLR = {'z','g','1!','2@'}; % b,z,g,r for 1,2,3,4
 if debug
-%keyLR = {'a','f','s','d'}; % b,z,g,r for 1,2,3,4
+   keyLR = {'a','f','s','d'}; % b,z,g,r for 1,2,3,4
 end
-
-%keyLR = {'a','f','s','d'}; % b,z,g,r for 1,2,3,4
 
 KbName('UnifyKeyNames');
 LH = KbName(keyLR{1});
