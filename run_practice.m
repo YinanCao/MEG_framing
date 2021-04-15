@@ -13,7 +13,7 @@ global_variables;
 
 % HideCursor;
 info.whichsess = 0; % practice
-info.whichrun = 0;
+info.whichrun = 1;
 
 drawtext_realign(window, 'Eye Position Calibration', 'center', white, info)
 drawtext_realign(window, 'Bewegen Sie Ihre Augen, um den schwarzen Punkt zu verfolgen', center_y + 175, white, info)

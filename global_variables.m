@@ -1,5 +1,5 @@
 
-SubName = 'XXX';
+SubName = 'GKH28';
 gabor_triangle_rotation = 'R';
 
 addpath(genpath('/usr/share/psychtoolbox-3/'))
