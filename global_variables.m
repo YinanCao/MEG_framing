@@ -19,7 +19,7 @@ screenNumber = max(Screen('Screens'));
 
 % Define the keys
 keyLR = {'z','g','1!','2@'}; % b,z,g,r for 1,2,3,4
-keyLR = {'a','f','s','d'};
+% keyLR = {'a','f','s','d'};
 if debug
    keyLR = {'a','f','s','d'}; % b,z,g,r for 1,2,3,4
 end
