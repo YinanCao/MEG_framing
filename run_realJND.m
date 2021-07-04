@@ -10,7 +10,7 @@ practice = 0;
 global_variables;
 %---------------
 
-JND_quest;
+JND_quest_diff;
 
 % Close and clear all
 Screen('CloseAll');

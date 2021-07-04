@@ -16,7 +16,7 @@ if ~practice
     load([log_dir,SubName,'_contrast_JND.mat'])
     JND = Quest.Quantile_JND;
 end
-%JND=0.09;
+
 
 Screen('Preference', 'SkipSyncTests', 2);
 %--------------------------------------

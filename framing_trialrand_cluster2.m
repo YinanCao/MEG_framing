@@ -6,7 +6,7 @@ else
 log_dir = '/Users/yinancaojake/Documents/Postdoc/UKE/MEG_framing_data/';
 end
 
-for subj = 2:3
+for subj = 3:4
 
 SubName = ['subj#_',num2str(subj)];
 
