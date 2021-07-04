@@ -1,6 +1,7 @@
 
-SubName = 'GKH28';
-gabor_triangle_rotation = 'R';
+SubName = 'MSE24';
+gabor_triangle_rotation = 'L';
+
 
 addpath(genpath('/usr/share/psychtoolbox-3/'))
 if IsLinux
@@ -9,6 +10,13 @@ else
 log_dir = '/Users/yinancaojake/Documents/Postdoc/UKE/MEG_framing_data/';
 end
 Screen('CloseAll');
+
+
+if ~practice
+    load([log_dir,SubName,'_contrast_JND.mat'])
+    JND = Quest.Quantile_JND;
+end
+%JND=0.09;
 
 Screen('Preference', 'SkipSyncTests', 2);
 %--------------------------------------
@@ -39,6 +47,9 @@ red       = [200,0,0];
 blue      = [0,0,200];
 pink      = [255,20,147];
 dark_grey = white / 4;
+
+info.frametxt_color = black;
+
 Gabor.holder_c  = [0 1 1];
 info.gabor_color = 'W';
 info.fb_color_set = {green,red};
@@ -55,9 +66,10 @@ if debug
     smallWindow4Debug  = [0 0 1920 1080]/1.2;
     disp('>>>>>> debugging mode <<<<<<')
 end 
-Screen('Preference', 'TextRenderer', 1); % smooth text
+Screen('Preference', 'TextRenderer', 1); % smooth text 
 [window, windowRect] = PsychImaging('OpenWindow', screenNumber, grey, smallWindow4Debug, 32, 2,...
-    [], [], kPsychNeed32BPCFloat);
+     [], [], kPsychNeed32BPCFloat);
+% [window, windowRect] = PsychImaging('OpenWindow', screenNumber, grey);
 [center_x, center_y] = RectCenter(windowRect);
 Screen('TextFont', window, 'Helvetica'); % define text font
 Screen('TextSize', window, 20); % define text font

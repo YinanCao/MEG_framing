@@ -46,7 +46,7 @@ if info.ET
     trigger(info.eyelinkstart);
 end
 
-JND_quest;
+%JND_quest;
 motor_localizer;
 sensory_localizer;
 framing_task;

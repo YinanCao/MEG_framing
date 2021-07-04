@@ -98,3 +98,6 @@ ShowCursor;
 fclose('all');
 Priority(0);
 sca;
+
+mean(TrialFrame.correct==1)
+

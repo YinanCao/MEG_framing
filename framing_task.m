@@ -14,10 +14,10 @@ end
 TrialFrame.framing_design = framing_design;
 
 if ~practice
-    load([log_dir,SubName,'_contrast_JND.mat'])
-    JND = Quest.Quantile_JND;
     nTrials = N_perrun;
 end
+
+
 
 tmp = [-2,-1,0,1,2]*JND + 0.5;
 tmp(tmp>1) = 1;
@@ -107,7 +107,7 @@ for trial = 1:nTrials
         Rotated_fixation(window,fix_rect,center_x,center_y,frame_color_set{frame_cue},[0,90]);
         Screen('FillOval', window, white, CenterRectOnPointd([0 0 lineWidthPix lineWidthPix], center_x, center_y));
     else
-        drawtext_realign(window, frame_text_set{frame_cue}, 'center', white, info)
+        drawtext_realign(window, frame_text_set{frame_cue}, 'center', info.frametxt_color, info)
     end
     frame_on = Screen('Flip', window, sensory_on + (round(TrialFrame.sensoryDur/ifi) - .5)*ifi);
     

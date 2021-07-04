@@ -3,10 +3,8 @@
 if practice
     JND = 0.12;
 end
-if ~practice
-    load([log_dir,SubName,'_contrast_JND.mat'])
-    JND = Quest.Quantile_JND;
-end
+
+
 tmp = [-2,-1,0,1,2]*JND + 0.5;
 tmp(tmp>1) = 1;
 tmp(tmp<0.15) = 0.15;
