@@ -23,7 +23,7 @@ TrialJND.t_guess                 = TrialJND.Gabor_all_contrast_base...
     diff(TrialJND.far_rng)*rand + min(TrialJND.far_rng)]);
 TrialJND.Gabor_contrast          = TrialJND.Gabor_all_contrast_base(TrialJND.Which_quest);
 
-TrialJND.t_guess                 = TrialJND.t_guess - TrialJND.GB_all_contrast_base;
+TrialJND.t_guess                 = TrialJND.t_guess - TrialJND.Gabor_all_contrast_base;
 
 %    Make a truncated distributaion for inter_trial delay
 pd                            = makedist('Exponential','mu',0.75);

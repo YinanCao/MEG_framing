@@ -17,6 +17,11 @@ if ~practice
     nTrials = N_perrun;
 end
 
+if ~practice
+    load([log_dir,SubName,'_contrast_JND.mat'])
+    JND = Quest.Quantile_JND;
+end
+
 
 
 tmp = [-2,-1,0,1,2]*JND + 0.5;

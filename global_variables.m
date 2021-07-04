@@ -1,24 +1,15 @@
 
-SubName = 'MSE24';
+SubName = 'ZZZ';
 gabor_triangle_rotation = 'L';
-
 
 addpath(genpath('/usr/share/psychtoolbox-3/'))
 if IsLinux
-log_dir = '/home/usera/Documents/MEG_framing_data/';
+   log_dir = '/home/usera/Documents/MEG_framing_data/';
 else
-log_dir = '/Users/yinancaojake/Documents/Postdoc/UKE/MEG_framing_data/';
+   log_dir = '/Users/yinancaojake/Documents/Postdoc/UKE/MEG_framing_data/';
 end
 Screen('CloseAll');
-
-
-if ~practice
-    load([log_dir,SubName,'_contrast_JND.mat'])
-    JND = Quest.Quantile_JND;
-end
-
-
-Screen('Preference', 'SkipSyncTests', 2);
+Screen('Preference', 'SkipSyncTests', 0);
 %--------------------------------------
 % Open the window and Setup PTB
 %--------------------------------------
@@ -28,6 +19,7 @@ screenNumber = max(Screen('Screens'));
 
 % Define the keys
 keyLR = {'z','g','1!','2@'}; % b,z,g,r for 1,2,3,4
+keyLR = {'a','f','s','d'};
 if debug
    keyLR = {'a','f','s','d'}; % b,z,g,r for 1,2,3,4
 end
