@@ -206,8 +206,14 @@ JND.base_value       = TrialJND.Gabor_all_contrast_base(1);
 estimated_jnd = [Quest.Quantile_JND, Quest.Mean_JND]
 disp(['JND = ', num2str(estimated_jnd)])
 
+time_str = strrep(mat2str(fix(clock)),' ','_');
+
 if ~practice
-    if ~exist([log_dir,SubName,'_contrast_JND.mat'],'file')
-        save([log_dir,SubName,'_contrast_JND.mat'],'JND_BDMOGtask','Quest','JND');
-    end
+    save([log_dir,SubName,'_contrast_JND_',time_str,'.mat'],'JND_BDMOGtask','Quest','JND');
 end
+
+% if ~practice
+% %     if ~exist([log_dir,SubName,'_contrast_JND.mat'],'file')
+%         save([log_dir,SubName,'_contrast_JND_',time_str,'.mat'],'JND_BDMOGtask','Quest','JND');
+% %     end
+% end
