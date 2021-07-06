@@ -55,8 +55,8 @@ end
 t_guess = log10(TrialJND.t_guess);
 for q = 1:TrialJND.num_quests
     eval(['Quest.tGuess' num2str(q) '= t_guess(q)' ]);
-    eval(['Quest.tGuessSd' num2str(q) '= 0.5']);
-    eval(['Quest.pThreshold' num2str(q) '= 0.70']);
+    eval(['Quest.tGuessSd' num2str(q) '= 2']);
+    eval(['Quest.pThreshold' num2str(q) '= 0.65']);
     eval(['Quest.beta' num2str(q) '= 3.5']);
     eval(['Quest.delta' num2str(q) '= 0.01']);
     eval(['Quest.gamma' num2str(q) '= 0.5']);

@@ -1,12 +1,12 @@
 
-SubName = 'XYZ26';
+SubName = 'NRE21';
 
-if IsLinux
+%if IsLinux
    log_dir = '/home/usera/Documents/MEG_framing_data/';
    addpath(genpath('/usr/share/psychtoolbox-3/'))
-else
-   log_dir = '/Users/yinancaojake/Documents/Postdoc/UKE/MEG_framing_data/';
-end
+%else
+   %log%_dir = '/Users/yinancaojake/Documents/Postdoc/UKE/MEG_framing_data/';
+%end
 close all; clc;
 
 fn = [log_dir,SubName,'_contrast_JND*.mat'];
