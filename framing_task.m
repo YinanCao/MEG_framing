@@ -22,7 +22,7 @@ if ~practice
     JND = Quest.Quantile_JND;
 end
 
-JND = .06;
+%JND = .06;
 
 tmp = [-2,-1,0,1,2]*JND + 0.5;
 tmp(tmp>1) = 1;
