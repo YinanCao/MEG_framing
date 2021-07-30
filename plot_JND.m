@@ -1,5 +1,5 @@
 
-SubName = 'NRE21';
+SubName = 'KSS18';
 
 %if IsLinux
    log_dir = '/home/usera/Documents/MEG_framing_data/';
@@ -30,3 +30,7 @@ if ~isempty(f)
         end
     end
 end
+
+
+
+

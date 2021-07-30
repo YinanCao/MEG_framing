@@ -22,7 +22,7 @@ if ~practice
     JND = Quest.Quantile_JND;
 end
 
-
+JND = .06;
 
 tmp = [-2,-1,0,1,2]*JND + 0.5;
 tmp(tmp>1) = 1;
@@ -104,7 +104,7 @@ for trial = 1:nTrials
     
     % frame cue on:
     frame_color_set = {red; blue};
-    frame_text_set = {'low','high'};
+    frame_text_set = {'Low','Hig'};
     Screen('DrawTextures', window, txt_id, [], dstRect, orientat_TLR);
     Screen('FrameOval', window, Gabor.holder_c, dstRect, Gabor.outlineWidth);
     info.usecolor = 0;

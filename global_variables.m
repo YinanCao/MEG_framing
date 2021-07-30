@@ -1,6 +1,6 @@
 
-SubName = 'NRE21';
-gabor_triangle_rotation = 'R';
+SubName = 'VBT30';
+gabor_triangle_rotation = 'L';
 
 addpath(genpath('/usr/share/psychtoolbox-3/'))
 if IsLinux
@@ -40,7 +40,7 @@ blue      = [0,0,200];
 pink      = [255,20,147];
 dark_grey = white / 4;
 
-info.frametxt_color = black;
+info.frametxt_color = white;
 
 Gabor.holder_c  = [0 1 1];
 info.gabor_color = 'W';
